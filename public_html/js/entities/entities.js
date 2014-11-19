@@ -31,6 +31,26 @@ game.PlayerEntity = me.Entity.extend({
         this.body.update(delta);
 //        me.collision.check(this, true, this.collideHandler.bind(this), true);
         
+        if(me.input.isKeyPressed("left")){
+            this.body.vel.x -= this.body.accel.x * me.timer.tick;
+         //this.renderable.setCurrentAnimation("smallWalk");
+            }
+        else{
+            this.body.vel.x = 0;
+        }
+        this.body.update(delta);
+        
+//          if (me.input.isKeyPressed("up")) {
+//            // make sure we are not already jumping or falling
+//            if (!this.body.jumping && !this.body.falling) {
+//                // set current vel to the maximum defined value
+//                // gravity will then do the rest
+//                this.body.vel.y = -this.body.maxVel.y * me.timer.tick;
+//                // set the jumping flag
+//                this.body.jumping = true;
+//            } 
+//        }
+//        
         if(this.body.vel.x !== 0){ 
             if (!this.renderable.isCurrentAnimation("smallWalk")) {
                 this.renderable.setCurrentAnimation("smallWalk");
@@ -49,13 +69,6 @@ game.PlayerEntity = me.Entity.extend({
             
         }*/
         
-       /* if(me.input.isKeyPressed("left"))
-            this.body.vel.x -= this.body.accel.x * me.timer.tick;
-        else{
-            this.body.vel = 0;
-        }
-        this.body.update(delta);
-        return true;*/
     }
     
     });
