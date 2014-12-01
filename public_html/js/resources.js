@@ -21,6 +21,8 @@ game.resources = [
 	 {name: "CollinLevel01", type: "tmx", src: "data/map/CollinLevel01.tmx"},
          {name: "CollinLevel02", type: "tmx", src: "data/map/CollinLevel02.tmx"},
          {name: "CollinLevel03", type: "tmx", src: "data/map/CollinLevel03.tmx"},
+         {name: "CollinBonusLevel01", type: "tmx", src: "data/map/CollinBonusLevel01.tmx"},
+         {name: "CollinLevel04", type: "tmx", src: "data/map/CollinLevel04.tmx"}
 
 
 	/* Background music. 
