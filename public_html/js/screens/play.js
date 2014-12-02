@@ -7,7 +7,7 @@ game.PlayScreen = me.ScreenObject.extend({
 		// reset the score
 		game.data.score = 0;
 //                console.log("Play");
-                me.levelDirector.loadLevel("CollinLevel03");
+                me.levelDirector.loadLevel("CollinLevel01");
                 
                 this.resetPlayer(0, 400);
                 
