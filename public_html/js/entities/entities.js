@@ -1,6 +1,5 @@
 
-// TODO
-game.PlayerEntity = me.Entity.extend({
+ game.PlayerEntity = me.Entity.extend({
    init: function(x, y, settings){
        this._super(me.Entity, 'init', [x, y, {
                image: "mario",
@@ -9,7 +8,7 @@ game.PlayerEntity = me.Entity.extend({
                width: 128,
                height: 128,
                getShape: function(){
-                   return (new me.Rect(0, 0, 0, 128)).toPolygon();
+                   return (new me.Rect(0, 0, 30, 128)).toPolygon();
                }
        }]);
    
@@ -79,9 +78,17 @@ game.PlayerEntity = me.Entity.extend({
       },   
     
     collideHandler: function(response){
+        var ydif = this.pos.y - response.b.y;
         
+        
+        if(response.b.type === 'badguy'){
+            if(ydif<= -115){
+                response.b.alive = false;
+            }else{
+                me.state.change(me.state.MENU);
+            }    
+        }
     }
-    
 });
 
 
@@ -103,4 +110,64 @@ game.LevelTrigger = me.Entity.extend({
         me.levelDirector.loadLevel(this.level);
         me.state.current().resetPlayer(this.xSpawn, this.ySpawn);
     }
+});
+
+game.BadGuy = me.Entity.extend({
+    init: function(x, y, settings){
+        this._super(me.Entity, 'init', [x, y, {
+               image: "slime",
+               spritewidth: "60",
+               spriteheight: "28",
+               width: 60,
+               height: 28,
+               getShape: function(){
+                   return (new me.Rect(0, 0, 60, 28)).toPolygon();
+               }
+       }]);
+       
+       this.spritewidth = 60;
+       var width = settings.width;
+       x = this.pos.x;
+       this.startX = x;
+       this.endX = x + width - this.spritewidth;
+       this.pos.x = x + width -this.spritewidth;
+       this.updateBounds();
+
+       this.alwaysUpdate = true;
+       
+       this.walkLeft = false;
+       this.alive = true;
+       this.type = "badguy";
+       
+       this.renderable.addAnimation("run", [0, 1, 2], 80);
+       
+       this.body.setVelocity(4, 6);
+   
+    },
+    
+    update: function(delta){
+        this.body.update(delta);
+        me.collision.check(this, true, this.collideHandler.bind(this), true);
+        
+        if(this.alive){
+            if(this.walkLeft && this.pos.x <= this.startX) {
+                    this.walkLeft = false;
+                }else if(!this.walkLeft && this.pos.x >= this.endX) {
+                    this.walkLeft = true;
+                }
+                this.flipX(!this.walkLeft);
+                this.body.vel.x += (this.walkLeft) ? -this.body.accel.x * me.timer.tick : this.body.accel.x * me.timer.tick;
+        }else{
+            me.game.world.removeChild(this);
+        }
+        
+        this._super(me.Entity, "update", [delta]);
+        return true;
+    },
+    
+    collideHandler: function(){
+        
+    }
+    
+    
 });
