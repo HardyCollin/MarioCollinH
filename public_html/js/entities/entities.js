@@ -14,8 +14,11 @@
    
        this.renderable.addAnimation("idle", [3]);
        this.renderable.addAnimation("smallWalk", [8, 9, 10, 11, 12, 13], 80);
+       this.renderable.addAnimation("shrink", [0, 1, 2, 3], 80);
+       this.renderable.addAnimation("grow", [4, 5, 6, 7], 80);
        
        this.renderable.setCurrentAnimation("idle");
+       
        
        this.body.setVelocity(5, 20);
        me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
@@ -36,25 +39,47 @@
         this.body.update(delta);
         me.collision.check(this, true, this.collideHandler.bind(this), true);
         
-        if(this.body.vel.x !== 0){
-            if(!this.renderable.isCurrentAnimation("smallWalk")) {
-                this.renderable.setCurrentAnimation("smallWalk");
-                this.renderable.setAnimationFrame();
-            }
+//        if(this.body.vel.x !== 0){
+//            if(!this.renderable.isCurrentAnimation("smallWalk")) {
+//                this.renderable.setCurrentAnimation("smallWalk");
+//                this.renderable.setAnimationFrame();
+//            }
+//        }else{
+//            this.renderable.setCurrentAnimation("idle");
+//        }
+//        
+//        if(this.body.vel.x !== 0){
+//            if(!this.renderable.isCurrentAnimation("smallWalk")) {
+//                this.renderable.setCurrentAnimation("smallWalk");
+//                this.renderable.setAnimationFrame();
+//            }
+//        }else{
+//            this.renderable.setCurrentAnimation("idle");
+//        }
+
+if(!this.big)
+            if(this.body.vel.x !== 0){
+                //uses small walk animation.
+                if(!this.renderable.isCurrentAnimation("smallWalk") && !this.renderable.isCurrentAnimation("grow") && !this.renderable.isCurrentAnimation("shrink")) {
+                    this.renderable.setCurrentAnimation("smallWalk");
+                    this.renderable.setAnimationFrame();
+                }
         }else{
+            //This code sets mario's idle position.
             this.renderable.setCurrentAnimation("idle");
-        }
         
+    }else{
         if(this.body.vel.x !== 0){
-            if(!this.renderable.isCurrentAnimation("smallWalk")) {
-                this.renderable.setCurrentAnimation("smallWalk");
+            if(!this.renderable.isCurrentAnimation("bigWalk") && !this.renderable.isCurrentAnimation("grow") && !this.renderable.isCurrentAnimation("shrink")) {
+                this.renderable.setCurrentAnimation("bigWalk");
                 this.renderable.setAnimationFrame();
             }
         }else{
-            this.renderable.setCurrentAnimation("idle");
+            this.renderable.setCurrentAnimation("bigIdle");
         }
+    }        
             
-    
+//    Code for jumping
         if (me.input.isKeyPressed('up')){
             // make sure we are not already jumping or falling
             if (!this.body.jumping && !this.body.falling) {
@@ -76,7 +101,7 @@
         // handle collisions against other shapes
         //me.collision.check(this);
       },   
-    
+//    Colliding with badguy
     collideHandler: function(response){
         var ydif = this.pos.y - response.b.pos.y;
         console.log(ydif);
@@ -107,6 +132,8 @@ game.LevelTrigger = me.Entity.extend({
         me.state.current().resetPlayer(this.xSpawn, this.ySpawn);
     }
 });
+
+//Code for Slimes
 
 game.BadGuy = me.Entity.extend({
     init: function(x, y, settings){
@@ -167,7 +194,7 @@ game.BadGuy = me.Entity.extend({
     
     
 });
-
+//Code for Mushroom
 game.Mushroom = me.Entity.extend({
     init: function(x, y, settings) {
         this._super(me.Entity, 'init', [x, y, {

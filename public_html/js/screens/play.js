@@ -7,7 +7,7 @@
 		// reset the score
 		game.data.score = 0;
 //                console.log("Play");
-                me.levelDirector.loadLevel("CollinLevel01");
+                me.levelDirector.loadLevel("CollinLevel03");
                 
                 this.resetPlayer(0, 400);
                 
