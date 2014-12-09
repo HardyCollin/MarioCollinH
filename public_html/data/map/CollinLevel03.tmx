@@ -51,8 +51,11 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup name="BadGuy">
+ <objectgroup name="EnemyEntities">
   <object name="BadGuy" x="700" y="698" width="292" height="72"/>
   <object name="BadGuy" x="634" y="210" width="136" height="66"/>
+ </objectgroup>
+ <objectgroup name="CollectableEntities">
+  <object name="Mushroom" x="70" y="704" width="76" height="68"/>
  </objectgroup>
 </map>
